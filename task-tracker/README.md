@@ -8,6 +8,7 @@ This project is a lightweight task manager I built during my BTech in Computer S
 ## Features
 - Add tasks with live updates  
 - Mark tasks as complete/incomplete
+- Delete tasks
 
 ## Why This Project?
 This app was built during my internship as my first real project using React and Vite. It's part of my hands-on learning experience in modern web development. I'm exploring component-based UIs, state management, and how real apps persist data — all from the ground up.   

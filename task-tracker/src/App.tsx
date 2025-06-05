@@ -45,6 +45,9 @@ function App() {
 
   return (
     <div className="max-w-xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-center mb-6 text-teal-800">
+        Task Tracker
+      </h1>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
           type="text"

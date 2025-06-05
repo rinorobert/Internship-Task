@@ -12,7 +12,8 @@ It helps users add, complete, and delete tasks — with data saved locally for p
 ## Features
 - Add tasks with live updates  
 - Mark tasks as complete/incomplete
-- Delete tasks  
+- Delete tasks 
+- Tasks saved in browser’s localStorage 
 
 ## Why This Project?
 This app was built during my internship as my first real project using React and Vite. It's part of my hands-on learning experience in modern web development. I'm exploring component-based UIs, state management, and how real apps persist data — all from the ground up.   

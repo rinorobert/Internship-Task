@@ -12,20 +12,15 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
-  // Load tasks from localStorage once
   useEffect(() => {
     const stored = localStorage.getItem("tasks");
-    if (stored) {
-      setTasks(JSON.parse(stored));
-    }
+    if (stored) setTasks(JSON.parse(stored));
   }, []);
 
-  // Save tasks whenever they change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  // Add new task
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!task.trim()) return;
@@ -33,58 +28,57 @@ function App() {
     setTask("");
   }
 
-  // Toggle task completion
   function toggleComplete(id: number) {
     setTasks(
-      tasks.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-      )
+      tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
     );
   }
 
-  // Delete task
   function handleDelete(id: number) {
     setTasks(tasks.filter((t) => t.id !== id));
   }
 
-  // Filter tasks according to current filter state
   const filteredTasks = tasks.filter((t) => {
     if (filter === "active") return !t.completed;
     if (filter === "completed") return t.completed;
-    return true; // all
+    return true;
   });
 
   return (
-    <div className="max-w-xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-xl mx-auto mt-12 p-6">
       <h1 className="text-3xl font-bold text-center mb-6 text-teal-800">
         Task Tracker
       </h1>
 
-      {/* Task input form */}
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          type="text"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
-          placeholder="Add a new task"
-          className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <button
-          type="submit"
-          className="bg-indigo-600 text-white px-4 rounded-md hover:bg-indigo-700 transition"
-        >
-          Add
-        </button>
-      </form>
+      {/* Task Input Card */}
+      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <input
+            type="text"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            placeholder="Add a new task"
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <button
+            type="submit"
+            className="bg-indigo-600 text-white px-4 rounded-md hover:bg-indigo-700 transition"
+          >
+            Add
+          </button>
+        </form>
+      </div>
 
-      {/* Filter buttons */}
-      <div className="flex justify-center gap-4 mt-4">
+      {/* Filter Card */}
+      <div className="bg-indigo-50 rounded-lg shadow-sm p-4 mb-6 flex justify-center gap-4">
         {["all", "active", "completed"].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f as any)}
-            className={`px-3 py-1 rounded ${
-              filter === f ? "bg-indigo-600 text-white" : "bg-gray-200"
+            className={`px-4 py-2 rounded font-semibold transition ${
+              filter === f
+                ? "bg-indigo-600 text-white shadow-md"
+                : "bg-white text-indigo-600 hover:bg-indigo-200"
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -92,38 +86,46 @@ function App() {
         ))}
       </div>
 
-      {/* Task list */}
-      <ul className="mt-6 space-y-3">
-        {filteredTasks.map((t) => (
-          <li
-            key={t.id}
-            className="flex items-center justify-between bg-gray-50 p-3 rounded-md shadow-sm"
-          >
-            <label className="flex items-center gap-3 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={t.completed}
-                onChange={() => toggleComplete(t.id)}
-                className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
-              />
-              <span
-                className={`${
-                  t.completed ? "line-through text-gray-400" : "text-gray-900"
-                } text-lg`}
+      {/* Task List Card */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        {filteredTasks.length === 0 ? (
+          <p className="text-center text-gray-500 italic">
+            No tasks to display
+          </p>
+        ) : (
+          <ul className="space-y-3">
+            {filteredTasks.map((t) => (
+              <li
+                key={t.id}
+                className="flex items-center justify-between bg-gray-50 p-3 rounded-md shadow-sm"
               >
-                {t.text}
-              </span>
-            </label>
-            <button
-              onClick={() => handleDelete(t.id)}
-              aria-label={`Delete task: ${t.text}`}
-              className="text-red-500 hover:text-red-700 transition text-xl"
-            >
-              ❌
-            </button>
-          </li>
-        ))}
-      </ul>
+                <label className="flex items-center gap-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={t.completed}
+                    onChange={() => toggleComplete(t.id)}
+                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                  />
+                  <span
+                    className={`${
+                      t.completed ? "line-through text-gray-400" : "text-gray-900"
+                    } text-lg`}
+                  >
+                    {t.text}
+                  </span>
+                </label>
+                <button
+                  onClick={() => handleDelete(t.id)}
+                  aria-label={`Delete task: ${t.text}`}
+                  className="text-red-500 hover:text-red-700 transition text-xl"
+                >
+                  ❌
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
